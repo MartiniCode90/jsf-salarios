@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta http-equiv="Content-Language" content="pt-BR" />
+    <title>Lista de Salários</title>
+    <style>
+        body { text-align:center; font-family:Arial,sans-serif; }
+        table { margin:0 auto; border-collapse:collapse; width:80%; }
+        th, td { border:1px solid #ddd; padding:8px; }
+        th { background:#f2f2f2; text-align:center; }
+        td { text-align:center; }
+        .pagination-buttons { margin-top:20px; }
+    </style>
+</h:head>
+<h:body>
+    <h1>Lista de Salários</h1>
+
+    <h:form id="tableForm">
+        <h:messages globalOnly="true" style="color:green"/>
+
+        <h:dataTable value="#{pessoaBean.pagina}" var="p" border="1">
+            <h:column><f:facet name="header">ID</f:facet>#{p.pessoaId}</h:column>
+            <h:column><f:facet name="header">Nome</f:facet>#{p.nomePessoa}</h:column>
+            <h:column><f:facet name="header">Cargo</f:facet>#{p.nomeCargo}</h:column>
+            <h:column>
+                <f:facet name="header">Salário</f:facet>
+                R$ #{p.salario},00
+            </h:column>
+        </h:dataTable>
+
+        <div class="pagination-buttons">
+            <h:commandButton value="Anterior"
+                             action="#{pessoaBean.prevPage}"
+                             disabled="#{pessoaBean.currentPage == 1}" />
+            <h:outputText
+                    value="Página #{pessoaBean.currentPage} de #{pessoaBean.totalPages}
+                 (#{pessoaBean.fromRecord}–#{pessoaBean.toRecord} de #{pessoaBean.totalRecords})" />
+            <h:commandButton value="Próximo"
+                             action="#{pessoaBean.nextPage}"
+                             disabled="#{pessoaBean.currentPage == pessoaBean.totalPages}" />
+        </div>
+    </h:form>
+
+    <h:form id="actionForm">
+        <h:commandButton value="Recalcular Salários"
+                         action="#{pessoaBean.recalcular}" />
+        <h:commandButton value="Início"
+                         action="#{pessoaBean.goToFirstPage}" />
+    </h:form>
+
+    <h:form id="reportForm">
+        <h:commandButton value="Baixar PDF da Página"
+                         action="#{reportBean.downloadPdf}" />
+    </h:form>
+
+</h:body>
+</html>
